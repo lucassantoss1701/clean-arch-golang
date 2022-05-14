@@ -27,7 +27,7 @@ func NewCreateOrderUseCase(printOrderGateway orderGateway.PrintOrderGateway,
 func (useCase *CreateOrderUseCase) Execute(input *Input) {
 	order := orderModel.NewOrder(input.Items, input.PaymentType)
 
-	useCase.paymentGateway.Pay(order.Total(), order.GetPaymentType())
+	useCase.paymentGateway.Pay(order.Total(), order.PaymentMethod)
 
 	useCase.printOrderGateway.PrintCustomerOrderGateway(order)
 
@@ -38,5 +38,5 @@ func (useCase *CreateOrderUseCase) Execute(input *Input) {
 
 type Input struct {
 	Items       []itemModel.Item
-	PaymentType paymentModel.PAYMENT_TYPE
+	PaymentType paymentModel.PAYMENT_METHOD
 }

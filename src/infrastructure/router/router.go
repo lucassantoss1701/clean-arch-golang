@@ -1,8 +1,8 @@
 package router
 
 import (
-	"lucassantoss1701/clean/src/infrastructure/config"
-	"lucassantoss1701/clean/src/infrastructure/order/routes"
+	config "lucassantoss1701/clean/src/infrastructure/config"
+	routes "lucassantoss1701/clean/src/infrastructure/order/routes"
 	orderUseCase "lucassantoss1701/clean/src/usecase/order"
 
 	"github.com/gin-gonic/gin"
@@ -13,11 +13,13 @@ type ApplicationContext struct {
 }
 
 func SetupHTTP(applicationContext *config.ApplicationContext) *gin.Engine {
-	r := gin.Default()
-	prepareAllRoutes(r, applicationContext)
-	return r
+	router := gin.Default()
+
+	prepareAllRoutes(router, applicationContext)
+
+	return router
 }
 
-func prepareAllRoutes(r *gin.Engine, applicationContext *config.ApplicationContext) {
-	routes.SetupRoutesOrder(r, applicationContext.CreateOrderController)
+func prepareAllRoutes(router *gin.Engine, applicationContext *config.ApplicationContext) {
+	routes.SetupOrderRoutes(router, applicationContext.CreateOrderController)
 }

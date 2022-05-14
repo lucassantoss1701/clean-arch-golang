@@ -1,21 +1,21 @@
 package models
 
 type Item struct {
-	id       int
-	name     string
-	quantity int
-	price    int
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Quantity int    `json:"quantity"`
+	Price    int    `json:"price"`
 }
 
 func NewItem(id int, name string, quantity int, price int) *Item {
 	return &Item{
-		id:       id,
-		name:     name,
-		quantity: quantity,
-		price:    price,
+		Id:       id,
+		Name:     name,
+		Quantity: quantity,
+		Price:    price,
 	}
 }
 
-func (i *Item) Total() int {
-	return i.price * i.quantity
+func (item *Item) Total() int {
+	return item.Price * item.Quantity
 }

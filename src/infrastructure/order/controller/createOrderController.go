@@ -10,23 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CreateOrderRequest struct {
-	ItemsDTO    []*ItemDTO                `json:"items"`
-	PaymentType paymentModel.PAYMENT_TYPE `json:"payment_type"`
-}
-
 type CreateOrderController struct {
 	createOrderUseCase *orderUseCase.CreateOrderUseCase
-}
-
-func toEntity(itemsDTO []*ItemDTO) []models.Item {
-	var items []models.Item
-	for _, itemDTO := range itemsDTO {
-		item := models.NewItem(itemDTO.Id, itemDTO.Name, itemDTO.Quantity, itemDTO.Price)
-		items = append(items, *item)
-	}
-
-	return items
 }
 
 func NewCreateOrderController(orderUseCase *orderUseCase.CreateOrderUseCase) *CreateOrderController {
@@ -35,16 +20,21 @@ func NewCreateOrderController(orderUseCase *orderUseCase.CreateOrderUseCase) *Cr
 	}
 }
 
-func (createOrderController *CreateOrderController) CreateOrder(c *gin.Context) {
+func (controller *CreateOrderController) CreateOrder(httpContext *gin.Context) {
 	var request CreateOrderRequest
-	c.BindJSON(&request)
+	httpContext.BindJSON(&request)
 
 	input := &orderUseCase.Input{
-		Items:       toEntity(request.ItemsDTO),
+		Items:       request.Items,
 		PaymentType: request.PaymentType,
 	}
 
-	createOrderController.createOrderUseCase.Execute(input)
+	controller.createOrderUseCase.Execute(input)
 
-	c.JSON(http.StatusOK, request)
+	httpContext.JSON(http.StatusOK, request)
+}
+
+type CreateOrderRequest struct {
+	Items       []models.Item               `json:"items"`
+	PaymentType paymentModel.PAYMENT_METHOD `json:"payment_type"`
 }

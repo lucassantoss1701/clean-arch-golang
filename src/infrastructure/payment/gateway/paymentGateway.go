@@ -1,28 +1,41 @@
 package service
 
 import (
-	"lucassantoss1701/clean/src/entity/payment/models"
-	service "lucassantoss1701/clean/src/infrastructure/payment/service"
+	models "lucassantoss1701/clean/src/entity/payment/models"
 )
 
 type PaymentGateway struct {
+	CashGateway       *CashGateway
+	CreditCardGateway *CreditCardGateway
+	DebitCardGateway  *DebitCardGateway
 }
 
-func (paymentGateway *PaymentGateway) Pay(value int, paymentType *models.PAYMENT_TYPE) {
-	getPaymentMethod(paymentType).Pay(value)
+func NewPaymentStrategyGateway(
+	cashGateway *CashGateway,
+	creditCardGateway *CreditCardGateway,
+	debitCardGateway *DebitCardGateway) *PaymentGateway {
+	return &PaymentGateway{
+		CashGateway:       cashGateway,
+		CreditCardGateway: creditCardGateway,
+		DebitCardGateway:  debitCardGateway,
+	}
 }
 
-func getPaymentMethod(paymentType *models.PAYMENT_TYPE) service.PaymentMethod {
-	maps := make(map[models.PAYMENT_TYPE]func() service.PaymentMethod)
+func (gateway *PaymentGateway) Pay(value int, paymentMethod models.PAYMENT_METHOD) {
+	gateway.getPaymentMethod(paymentMethod).Pay(value)
+}
 
-	maps[models.CASH] = func() service.PaymentMethod {
-		return service.NewCash()
+func (gateway *PaymentGateway) getPaymentMethod(paymentMethod models.PAYMENT_METHOD) PaymentMethodGateway {
+	maps := make(map[models.PAYMENT_METHOD]func() PaymentMethodGateway)
+
+	maps[models.CASH] = func() PaymentMethodGateway {
+		return gateway.CashGateway
 	}
-	maps[models.CREDIT_CARD] = func() service.PaymentMethod {
-		return service.NewCreditCard()
+	maps[models.CREDIT_CARD] = func() PaymentMethodGateway {
+		return gateway.CreditCardGateway
 	}
-	maps[models.DEBIT_CARD] = func() service.PaymentMethod {
-		return service.NewDebitCard()
+	maps[models.DEBIT_CARD] = func() PaymentMethodGateway {
+		return gateway.DebitCardGateway
 	}
-	return maps[*paymentType]()
+	return maps[paymentMethod]()
 }

@@ -1,0 +1,9 @@
+package models
+
+type PAYMENT_TYPE string
+
+const (
+	CASH        PAYMENT_TYPE = "CASH"
+	CREDIT_CARD PAYMENT_TYPE = "CREDIT_CARD"
+	DEBIT_CARD  PAYMENT_TYPE = "DEBIT_CARD"
+)

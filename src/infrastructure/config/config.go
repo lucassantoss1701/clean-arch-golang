@@ -12,11 +12,14 @@ type ApplicationContext struct {
 }
 
 func NewApplicationContext() *ApplicationContext {
-	printTerminalGateway := &orderGateway.PrintTerminalGateway{}
-	orderDbGateway := &orderGateway.OrderDbGateway{}
-	paymentGateway := &paymentGateway.PaymentGateway{}
+	terminalPrintGateway := orderGateway.NewTerminalPrintGateway()
+	orderDbGateway := orderGateway.NewOrderDbGateway()
+	cashGateway := paymentGateway.NewCashGateway()
+	creditCardGateway := paymentGateway.NewCreditCardGateway()
+	debitCardGateway := paymentGateway.NewDebitCardGateway()
+	paymentGateway := paymentGateway.NewPaymentStrategyGateway(cashGateway, creditCardGateway, debitCardGateway)
 
-	createOrderUseCase := orderUseCase.NewCreateOrderUseCase(printTerminalGateway, orderDbGateway, paymentGateway)
+	createOrderUseCase := orderUseCase.NewCreateOrderUseCase(terminalPrintGateway, orderDbGateway, paymentGateway)
 
 	createOrderController := controller.NewCreateOrderController(createOrderUseCase)
 

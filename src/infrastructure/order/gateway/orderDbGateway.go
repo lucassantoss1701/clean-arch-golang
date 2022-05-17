@@ -8,6 +8,10 @@ import (
 type OrderDbGateway struct {
 }
 
+func NewOrderDbGateway() *OrderDbGateway {
+	return &OrderDbGateway{}
+}
+
 func (orderDbGateway *OrderDbGateway) Create(order *models.Order) {
-	fmt.Println("CRIADO NO BANCO")
+	fmt.Println("Saving in Database...")
 }

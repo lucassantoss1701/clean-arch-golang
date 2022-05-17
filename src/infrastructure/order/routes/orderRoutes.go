@@ -6,6 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutesOrder(r *gin.Engine, controller *controller.CreateOrderController) {
-	r.POST("/orders", controller.CreateOrder)
+func SetupOrderRoutes(router *gin.Engine, controller *controller.CreateOrderController) {
+	router.POST("/orders", controller.CreateOrder)
 }

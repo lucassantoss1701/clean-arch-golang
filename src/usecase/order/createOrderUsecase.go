@@ -1,6 +1,7 @@
 package order
 
 import (
+	"fmt"
 	itemModel "lucassantoss1701/clean/src/entity/item/models"
 	orderGateway "lucassantoss1701/clean/src/entity/order/gateway"
 	orderModel "lucassantoss1701/clean/src/entity/order/models"
@@ -33,7 +34,10 @@ func (useCase *CreateOrderUseCase) Execute(input *Input) {
 
 	useCase.printOrderGateway.PrintKitchenOrderGateway(order)
 
-	useCase.orderGateway.Create(order)
+	err := useCase.orderGateway.Create(order)
+	if err != nil {
+		fmt.Println("Pedido salvo com sucesso")
+	}
 }
 
 type Input struct {

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"database/sql"
 	"lucassantoss1701/clean/src/infrastructure/order/controller"
 	orderGateway "lucassantoss1701/clean/src/infrastructure/order/gateway"
 	paymentGateway "lucassantoss1701/clean/src/infrastructure/payment/gateway"
@@ -12,8 +13,9 @@ type ApplicationContext struct {
 }
 
 func NewApplicationContext() *ApplicationContext {
+
 	terminalPrintGateway := orderGateway.NewTerminalPrintGateway()
-	orderDbGateway := orderGateway.NewOrderDbGateway()
+	orderDbGateway := orderGateway.NewOrderDbGateway(getConnection())
 	cashGateway := paymentGateway.NewCashGateway()
 	creditCardGateway := paymentGateway.NewCreditCardGateway()
 	debitCardGateway := paymentGateway.NewDebitCardGateway()
@@ -26,4 +28,12 @@ func NewApplicationContext() *ApplicationContext {
 	return &ApplicationContext{
 		CreateOrderController: createOrderController,
 	}
+}
+
+func getConnection() *sql.DB {
+	dbConfig, err := GetConnection()
+	if err != nil {
+		panic(err)
+	}
+	return dbConfig.conn
 }

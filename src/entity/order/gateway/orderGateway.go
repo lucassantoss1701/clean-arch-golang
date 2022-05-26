@@ -1,7 +1,7 @@
 package gateway
 
-import models "lucassantoss1701/clean/src/entity/order/models"
+import orderModel "lucassantoss1701/clean/src/entity/order/model"
 
 type OrderGateway interface {
-	Create(order *models.Order)
+	Create(order *orderModel.Order) error
 }

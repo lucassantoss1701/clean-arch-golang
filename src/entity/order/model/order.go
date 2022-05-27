@@ -1,8 +1,8 @@
-package models
+package model
 
 import (
-	itemModel "lucassantoss1701/clean/src/entity/item/models"
-	paymentModel "lucassantoss1701/clean/src/entity/payment/models"
+	itemModel "lucassantoss1701/clean/src/entity/item/model"
+	paymentModel "lucassantoss1701/clean/src/entity/payment/model"
 
 	time "time"
 )

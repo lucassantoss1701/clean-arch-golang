@@ -2,14 +2,15 @@ package config
 
 import (
 	"database/sql"
-	"lucassantoss1701/clean/src/infrastructure/order/controller"
+	paymentService "lucassantoss1701/clean/src/entity/payment/service"
+	orderController "lucassantoss1701/clean/src/infrastructure/order/controller"
 	orderGateway "lucassantoss1701/clean/src/infrastructure/order/gateway"
 	paymentGateway "lucassantoss1701/clean/src/infrastructure/payment/gateway"
 	orderUseCase "lucassantoss1701/clean/src/usecase/order"
 )
 
 type ApplicationContext struct {
-	CreateOrderController *controller.CreateOrderController
+	CreateOrderController *orderController.CreateOrderController
 }
 
 func NewApplicationContext() *ApplicationContext {
@@ -19,11 +20,11 @@ func NewApplicationContext() *ApplicationContext {
 	cashGateway := paymentGateway.NewCashGateway()
 	creditCardGateway := paymentGateway.NewCreditCardGateway()
 	debitCardGateway := paymentGateway.NewDebitCardGateway()
-	paymentGateway := paymentGateway.NewPaymentStrategyGateway(cashGateway, creditCardGateway, debitCardGateway)
+	paymentService := paymentService.NewPaymentService(cashGateway, creditCardGateway, debitCardGateway)
 
-	createOrderUseCase := orderUseCase.NewCreateOrderUseCase(terminalPrintGateway, orderDbGateway, paymentGateway)
+	createOrderUseCase := orderUseCase.NewCreateOrderUseCase(terminalPrintGateway, orderDbGateway, paymentService)
 
-	createOrderController := controller.NewCreateOrderController(createOrderUseCase)
+	createOrderController := orderController.NewCreateOrderController(createOrderUseCase)
 
 	return &ApplicationContext{
 		CreateOrderController: createOrderController,

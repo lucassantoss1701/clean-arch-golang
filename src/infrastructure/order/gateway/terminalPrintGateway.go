@@ -2,7 +2,7 @@ package gateway
 
 import (
 	"fmt"
-	models "lucassantoss1701/clean/src/entity/order/models"
+	orderModel "lucassantoss1701/clean/src/entity/order/model"
 )
 
 type TerminalPrintGateway struct {
@@ -12,7 +12,7 @@ func NewTerminalPrintGateway() *TerminalPrintGateway {
 	return &TerminalPrintGateway{}
 }
 
-func (terminalPrintGateway *TerminalPrintGateway) PrintCustomerOrderGateway(order *models.Order) {
+func (terminalPrintGateway *TerminalPrintGateway) PrintCustomerOrderGateway(order *orderModel.Order) {
 	fmt.Println()
 	fmt.Println("+--CLIENTE----------------------------------+")
 	fmt.Println("+ Cupom: ", order.Cupom)
@@ -35,7 +35,7 @@ func (terminalPrintGateway *TerminalPrintGateway) PrintCustomerOrderGateway(orde
 	fmt.Println()
 }
 
-func (terminalPrintGateway *TerminalPrintGateway) PrintKitchenOrderGateway(order *models.Order) {
+func (terminalPrintGateway *TerminalPrintGateway) PrintKitchenOrderGateway(order *orderModel.Order) {
 	fmt.Println()
 	fmt.Println("+--COZINHA----------------------------------+")
 	fmt.Println("+ Senha: ", order.Code)

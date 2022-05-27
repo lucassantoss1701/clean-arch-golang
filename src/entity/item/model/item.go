@@ -1,10 +1,10 @@
-package models
+package model
 
 type Item struct {
-	Id       int    `json:"id"`
-	Name     string `json:"name"`
-	Quantity int    `json:"quantity"`
-	Price    int    `json:"price"`
+	Id       int
+	Name     string
+	Quantity int
+	Price    int
 }
 
 func NewItem(id int, name string, quantity int, price int) *Item {

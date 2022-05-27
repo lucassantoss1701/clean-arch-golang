@@ -2,33 +2,35 @@ package order
 
 import (
 	"fmt"
-	itemModel "lucassantoss1701/clean/src/entity/item/models"
+	itemModel "lucassantoss1701/clean/src/entity/item/model"
 	orderGateway "lucassantoss1701/clean/src/entity/order/gateway"
-	orderModel "lucassantoss1701/clean/src/entity/order/models"
-	paymentGateway "lucassantoss1701/clean/src/entity/payment/gateway"
-	paymentModel "lucassantoss1701/clean/src/entity/payment/models"
+	orderModel "lucassantoss1701/clean/src/entity/order/model"
+	paymentModel "lucassantoss1701/clean/src/entity/payment/model"
+	paymentService "lucassantoss1701/clean/src/entity/payment/service"
 )
 
 type CreateOrderUseCase struct {
 	printOrderGateway orderGateway.PrintOrderGateway
 	orderGateway      orderGateway.OrderGateway
-	paymentGateway    paymentGateway.PaymentGateway
+	paymentService    *paymentService.PaymentService
 }
 
-func NewCreateOrderUseCase(printOrderGateway orderGateway.PrintOrderGateway,
+func NewCreateOrderUseCase(
+	printOrderGateway orderGateway.PrintOrderGateway,
 	orderGateway orderGateway.OrderGateway,
-	paymentGateway paymentGateway.PaymentGateway) *CreateOrderUseCase {
+	paymentService *paymentService.PaymentService) *CreateOrderUseCase {
 	return &CreateOrderUseCase{
 		printOrderGateway: printOrderGateway,
 		orderGateway:      orderGateway,
-		paymentGateway:    paymentGateway,
+		paymentService:    paymentService,
 	}
 }
 
 func (useCase *CreateOrderUseCase) Execute(input *Input) {
-	order := orderModel.NewOrder(input.Items, input.PaymentType)
+	fmt.Println("CreateOrderUseCase.Input", input)
+	order := orderModel.NewOrder(input.Items, input.PaymentMethod)
 
-	useCase.paymentGateway.Pay(order.Total(), order.PaymentMethod)
+	useCase.paymentService.Pay(order.Total(), order.PaymentMethod)
 
 	useCase.printOrderGateway.PrintCustomerOrderGateway(order)
 
@@ -36,11 +38,11 @@ func (useCase *CreateOrderUseCase) Execute(input *Input) {
 
 	err := useCase.orderGateway.Create(order)
 	if err != nil {
-		fmt.Println("Pedido salvo com sucesso")
+		fmt.Println(err)
 	}
 }
 
 type Input struct {
-	Items       []itemModel.Item
-	PaymentType paymentModel.PAYMENT_METHOD
+	Items         []itemModel.Item
+	PaymentMethod paymentModel.PAYMENT_METHOD
 }

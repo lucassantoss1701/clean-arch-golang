@@ -1,8 +1,8 @@
 package gateway
 
-import models "lucassantoss1701/clean/src/entity/order/models"
+import orderModel "lucassantoss1701/clean/src/entity/order/model"
 
 type PrintOrderGateway interface {
-	PrintCustomerOrderGateway(order *models.Order)
-	PrintKitchenOrderGateway(order *models.Order)
+	PrintCustomerOrderGateway(order *orderModel.Order)
+	PrintKitchenOrderGateway(order *orderModel.Order)
 }

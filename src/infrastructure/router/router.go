@@ -2,7 +2,7 @@ package router
 
 import (
 	config "lucassantoss1701/clean/src/infrastructure/config"
-	routes "lucassantoss1701/clean/src/infrastructure/order/routes"
+	orderRoute "lucassantoss1701/clean/src/infrastructure/order/route"
 	orderUseCase "lucassantoss1701/clean/src/usecase/order"
 
 	"github.com/gin-gonic/gin"
@@ -21,5 +21,5 @@ func SetupHTTP(applicationContext *config.ApplicationContext) *gin.Engine {
 }
 
 func prepareAllRoutes(router *gin.Engine, applicationContext *config.ApplicationContext) {
-	routes.SetupOrderRoutes(router, applicationContext.CreateOrderController)
+	orderRoute.SetupOrderRoutes(router, applicationContext.CreateOrderController)
 }

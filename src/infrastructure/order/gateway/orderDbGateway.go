@@ -1,14 +1,18 @@
 package gateway
 
 import (
+	"database/sql"
 	orderModel "lucassantoss1701/clean/src/entity/order/model"
 )
 
 type OrderDbGateway struct {
+	conn *sql.DB
 }
 
-func NewOrderDbGateway() *OrderDbGateway {
-	return &OrderDbGateway{}
+func NewOrderDbGateway(db *sql.DB) *OrderDbGateway {
+	return &OrderDbGateway{
+		conn: db,
+	}
 }
 
 func (orderDbGateway *OrderDbGateway) Create(order *orderModel.Order) error {

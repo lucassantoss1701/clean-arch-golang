@@ -14,6 +14,7 @@ type ApplicationContext struct {
 }
 
 func NewApplicationContext() *ApplicationContext {
+
 	terminalPrintGateway := orderGateway.NewTerminalPrintGateway()
 	orderDbGateway := orderGateway.NewOrderDbGateway(getConnection())
 	cashGateway := paymentGateway.NewCashGateway()

@@ -9,6 +9,7 @@ var applicationContext *config.ApplicationContext
 
 func init() {
 	applicationContext = config.NewApplicationContext()
+
 }
 
 func main() {
